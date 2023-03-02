@@ -47,122 +47,68 @@ def pregunta_03():
 pregunta_03()
 
 
+
 def pregunta_04():
-    """
-    La columna 3 contiene una fecha en formato `YYYY-MM-DD`. Retorne la cantidad de
-    registros por cada mes, tal como se muestra a continuación.
-
-    Rta/
-    [
-        ("01", 3),
-        ("02", 4),
-        ("03", 2),
-        ("04", 4),
-        ("05", 3),
-        ("06", 3),
-        ("07", 5),
-        ("08", 6),
-        ("09", 3),
-        ("10", 2),
-        ("11", 2),
-        ("12", 3),
-    ]
-
-    """
-    return
+    contador_meses = Counter([line[2].split('-')[1] for line in df])
+    return sorted(contador_meses.items())
 
 
 def pregunta_05():
-    """
-    Retorne una lista de tuplas con el valor maximo y minimo de la columna 2 por cada
-    letra de la columa 1.
-
-    Rta/
-    [
-        ("A", 9, 2),
-        ("B", 9, 1),
-        ("C", 9, 0),
-        ("D", 8, 3),
-        ("E", 9, 1),
-    ]
-
-    """
-    return
+    contador_valor_letras = {}
+    for letra, valor in map(lambda line: (line[0], float(line[1])), df):
+        contador_valor_letras[letra] = contador_valor_letras.get(letra, []) + [valor]
+        lista_tuplas = [(letra, max(valores), min(valores)) for letra, valores in contador_valor_letras.items()]
+    return sorted(lista_tuplas)
 
 
 def pregunta_06():
-    """
-    La columna 5 codifica un diccionario donde cada cadena de tres letras corresponde a
-    una clave y el valor despues del caracter `:` corresponde al valor asociado a la
-    clave. Por cada clave, obtenga el valor asociado mas pequeño y el valor asociado mas
-    grande computados sobre todo el archivo.
+    valores = {}
+    valores_min = {}
+    valores_max = {}
 
-    Rta/
-    [
-        ("aaa", 1, 9),
-        ("bbb", 1, 9),
-        ("ccc", 1, 10),
-        ("ddd", 0, 9),
-        ("eee", 1, 7),
-        ("fff", 0, 9),
-        ("ggg", 3, 10),
-        ("hhh", 0, 9),
-        ("iii", 0, 9),
-        ("jjj", 5, 17),
-    ]
+    for row in df:
+        diccionario = dict(item.split(':') for item in row[4].split(','))
+        for clave, valor in diccionario.items():
+            valor = int(valor)
+            if clave in valores:
+                valores[clave].append(valor)
+            else:
+                valores[clave] = [valor]
 
-    """
-    return
+    for clave, lista_valores in valores.items():
+        valores_min[clave] = min(lista_valores)
+        valores_max[clave] = max(lista_valores)
+
+    lista_tuplas = [(clave,valores_min[clave], valores_max[clave]) for clave in valores.keys()]
+    return sorted(lista_tuplas)
+
+pregunta_06()
 
 
 def pregunta_07():
-    """
-    Retorne una lista de tuplas que asocien las columnas 0 y 1. Cada tupla contiene un
-    valor posible de la columna 2 y una lista con todas las letras asociadas (columna 1)
-    a dicho valor de la columna 2.
-
-    Rta/
-    [
-        (0, ["C"]),
-        (1, ["E", "B", "E"]),
-        (2, ["A", "E"]),
-        (3, ["A", "B", "D", "E", "E", "D"]),
-        (4, ["E", "B"]),
-        (5, ["B", "C", "D", "D", "E", "E", "E"]),
-        (6, ["C", "E", "A", "B"]),
-        (7, ["A", "C", "E", "D"]),
-        (8, ["E", "D", "E", "A", "B"]),
-        (9, ["A", "B", "E", "A", "A", "C"]),
-    ]
-
-    """
-    return
+    valores = {}
+    for row in df:
+        letra = row[0]
+        valor = float(row[1])
+        if valor in valores:
+            valores[valor].append(letra)
+        else:
+            valores[valor] = [letra]
+ 
+    return sorted(valores.items())
 
 
 def pregunta_08():
-    """
-    Genere una lista de tuplas, donde el primer elemento de cada tupla contiene  el valor
-    de la segunda columna; la segunda parte de la tupla es una lista con las letras
-    (ordenadas y sin repetir letra) de la primera  columna que aparecen asociadas a dicho
-    valor de la segunda columna.
-
-    Rta/
-    [
-        (0, ["C"]),
-        (1, ["B", "E"]),
-        (2, ["A", "E"]),
-        (3, ["A", "B", "D", "E"]),
-        (4, ["B", "E"]),
-        (5, ["B", "C", "D", "E"]),
-        (6, ["A", "B", "C", "E"]),
-        (7, ["A", "C", "D", "E"]),
-        (8, ["A", "B", "D", "E"]),
-        (9, ["A", "B", "C", "E"]),
-    ]
-
-    """
-    return
-
+    valores = {}
+    for row in df:
+        letra = row[0]
+        valor = float(row[1])
+        if valor in valores:
+            valores[valor].append(letra)
+        else:
+            valores[valor] = [letra]
+    lista_tuplas = [(valor, sorted(list(set(valores[valor])))) for valor in valores.keys()]
+    return sorted(lista_tuplas)
 
 def pregunta_09():
     """
