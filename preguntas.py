@@ -111,68 +111,43 @@ def pregunta_08():
     return sorted(lista_tuplas)
 
 def pregunta_09():
-    """
-    Retorne un diccionario que contenga la cantidad de registros en que aparece cada
-    clave de la columna 5.
 
-    Rta/
-    {
-        "aaa": 13,
-        "bbb": 16,
-        "ccc": 23,
-        "ddd": 23,
-        "eee": 15,
-        "fff": 20,
-        "ggg": 13,
-        "hhh": 16,
-        "iii": 18,
-        "jjj": 18,
-    }
+    valores = {}
+    for row in df:
+        diccionario = dict(item.split(':') for item in row[4].split(','))
+        for clave in diccionario.keys():
+            if clave in valores:
+                valores[clave] += 1
+            else:
+                valores[clave] = 1
+    return dict(sorted(valores.items()))
 
-    """
-    return
 
 
 def pregunta_10():
-    """
-    Retorne una lista de tuplas contengan por cada tupla, la letra de la columna 1 y la
-    cantidad de elementos de las columnas 4 y 5.
 
-    Rta/
-    [
-        ("E", 3, 5),
-        ("A", 3, 4),
-        ("B", 4, 4),
-        ...
-        ("C", 4, 3),
-        ("E", 2, 3),
-        ("E", 3, 3),
-    ]
+    lista = [(fila[0], len(fila[3].split(',')), len(fila[4].split(','))) for fila in df]
 
-
-    """
-    return
+    return lista
 
 
 def pregunta_11():
-    """
-    Retorne un diccionario que contengan la suma de la columna 2 para cada letra de la
-    columna 4, ordenadas alfabeticamente.
+    suma_por_letra = {}
 
-    Rta/
-    {
-        "a": 122,
-        "b": 49,
-        "c": 91,
-        "d": 73,
-        "e": 86,
-        "f": 134,
-        "g": 35,
-    }
+    for fila in df:
+        numero = fila[1]
+        elementos = fila[3].split(',')
+        for elemento in elementos:
+            letra = elemento.split(',')[0]
+            if letra in suma_por_letra:
+                suma_por_letra[letra] += float(numero)
+            else:
+                suma_por_letra[letra] = float(numero)
 
+            
+    return dict(sorted(suma_por_letra.items()))
 
-    """
-    return
+pregunta_11()
 
 
 def pregunta_12():
