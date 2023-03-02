@@ -11,53 +11,40 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+# Leamos el archivo de manera global
 
+df = open('data.csv', 'r').readlines()
+df = [z.replace('\n', '') for z in df]
+df = [line.split('\t') for line in df]
 
 def pregunta_01():
-    """
-    Retorne la suma de la segunda columna.
+    suma_columna = 0
 
-    Rta/
-    214
+    for line in df:
+        suma_columna = suma_columna + float(line[1])
 
-    """
-    return
+    return suma_columna
 
+pregunta_01()
+
+
+
+from collections import Counter
 
 def pregunta_02():
-    """
-    Retorne la cantidad de registros por cada letra de la primera columna como la lista
-    de tuplas (letra, cantidad), ordendas alfabéticamente.
+    contador_letras = Counter([line[0] for line in df])
+    return sorted(contador_letras.items())
 
-    Rta/
-    [
-        ("A", 8),
-        ("B", 7),
-        ("C", 5),
-        ("D", 6),
-        ("E", 14),
-    ]
-
-    """
-    return
+pregunta_02()
 
 
 def pregunta_03():
-    """
-    Retorne la suma de la columna 2 por cada letra de la primera columna como una lista
-    de tuplas (letra, suma) ordendas alfabeticamente.
+    contador_valor_letras = {}
+    for letra, valor in map(lambda line: (line[0], float(line[1])), df):
+        contador_valor_letras[letra] = contador_valor_letras.get(letra, 0) + valor
+    return sorted(contador_valor_letras.items())
 
-    Rta/
-    [
-        ("A", 53),
-        ("B", 36),
-        ("C", 27),
-        ("D", 31),
-        ("E", 67),
-    ]
-
-    """
-    return
+pregunta_03()
 
 
 def pregunta_04():
