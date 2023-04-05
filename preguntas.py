@@ -151,18 +151,20 @@ pregunta_11()
 
 
 def pregunta_12():
-    """
-    Genere un diccionario que contengan como clave la columna 1 y como valor la suma de
-    los valores de la columna 5 sobre todo el archivo.
 
-    Rta/
-    {
-        'A': 177,
-        'B': 187,
-        'C': 114,
-        'D': 136,
-        'E': 324
-    }
+    suma_por_letra = {}
 
-    """
-    return
+    for fila in df:
+        letras = fila[0]
+        valores = fila[4].split(",")
+        
+        suma = 0
+        for valor in valores:
+            suma += int(valor.split(":")[1])
+        
+        if letras in suma_por_letra:
+            suma_por_letra[letras] += suma
+        else:
+            suma_por_letra[letras] = suma 
+
+    return dict(sorted(suma_por_letra.items()))
